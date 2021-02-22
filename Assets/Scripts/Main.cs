@@ -8,9 +8,9 @@ public class Main : MonoBehaviour
 {
     public int startPoint = 1;
     public int antCount = 1;
-    public int antSpeed = 10;
+    private int antSpeed = 0;
+    [SerializeField] private TextMeshProUGUI SpeedText;
     [SerializeField] private ClickScript _ClickZone;
-    [SerializeField] private Transform _Canvas;
     [SerializeField] private GameObject PointPref;
     [SerializeField] private GameObject LinePref;
     [SerializeField] private GameObject AntPref;
@@ -21,8 +21,6 @@ public class Main : MonoBehaviour
     List<PointController> p = new List<PointController>();
 
     int numCities;
-
-    private int PointCount = 1;
     private int[] bestTail;
     void Start()
     {
@@ -51,9 +49,13 @@ public class Main : MonoBehaviour
 
         Debug.Log(Algorithm.DisplayTail(bestTail));
     }
+    public void SpeedUpdate(float value)
+    {
+        antSpeed = Mathf.RoundToInt(value * 100); ;
+        SpeedText.text = antSpeed + "";
+    }
     private int curr = 0;
     private bool back = false;
-    private int time = 0;
     private void Update()
     {
         if (p.Count == 4)
@@ -83,14 +85,16 @@ public class Main : MonoBehaviour
     }
     private void AddPoint()
     {
-
         if (currLine == null)
         {
-            //currLine = Instantiate(LinePref, Vector3.zero, Quaternion.identity, _Canvas).GetComponent<LineController>();
+            currLine = Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>();
         }
 
-        p.Add(Instantiate(PointPref, GetMousePos(), Quaternion.identity, _Canvas).GetComponent<PointController>());
+        p.Add(Instantiate(PointPref, GetMousePos(), Quaternion.identity, _ClickZone.transform).GetComponent<PointController>());
         p[p.Count - 1].GetComponentInChildren<TextMeshProUGUI>().text = p.Count + "";
+
+        currLine.AddPoint(p);
+
     }
 
     public static Vector3 GetMousePos()

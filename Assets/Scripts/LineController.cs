@@ -12,12 +12,12 @@ public class LineController : MonoBehaviour
         lr = GetComponent<LineRenderer>();
         lr.positionCount = 0;
 
-        points = new List<PointController>();
+      
     }
-    public void AddPoint(PointController p)
+    public void AddPoint(List<PointController> p)
     {
         lr.positionCount++;
-        points.Add(p);
+        points = p;
     }
     private void LateUpdate()
     {
