@@ -11,6 +11,7 @@ public class Main : MonoBehaviour
     private int antSpeed = 0;
     [SerializeField] private TextMeshProUGUI SpeedText;
     [SerializeField] private ClickScript _ClickZone;
+    [SerializeField] private GameObject _SpawnAnt;
     [SerializeField] private GameObject PointPref;
     [SerializeField] private GameObject LinePref;
     [SerializeField] private GameObject AntPref;
@@ -25,77 +26,78 @@ public class Main : MonoBehaviour
     void Start()
     {
         _ClickZone.OnClickEvent += AddPoint;
-
-
-
-        wayd.Add(new WayData(1, 2, 2));
-        wayd.Add(new WayData(1, 3, 1.2));
-        wayd.Add(new WayData(1, 4, 3));
-        wayd.Add(new WayData(2, 3, 2.2));
-        wayd.Add(new WayData(2, 4, 3));
-        wayd.Add(new WayData(3, 4, 3));
-
-        Algorithm.AddReverse(wayd);
-
-        numCities = Algorithm.GetCount(wayd);
-
-
-        for (int i = 0; i < antCount; ++i)
-        {
-            ants.Add(new Ant(Algorithm.RandomTrail(1, numCities)));
-        }
-
-        bestTail = Algorithm.BestTrail(ants, wayd);
-
-        Debug.Log(Algorithm.DisplayTail(bestTail));
     }
     public void SpeedUpdate(float value)
     {
-        antSpeed = Mathf.RoundToInt(value * 100); ;
+        antSpeed = Mathf.RoundToInt(value * 100);
+        foreach (var item in _ClickZone.GetComponentsInChildren<AntAi>())
+        {
+            item.SpeedUpdate(antSpeed);
+        }
         SpeedText.text = antSpeed + "";
     }
-    private int curr = 0;
-    private bool back = false;
     private void Update()
     {
-        if (p.Count == 4)
-        {
-            if (AntPref.transform.position != p[bestTail[curr] - 1].transform.position)
-            {
-                AntPref.transform.position = Vector2.MoveTowards(AntPref.transform.position, p[bestTail[curr] - 1].transform.position, antSpeed * Time.deltaTime);
-            }
-            else
-            {
-                if (!back)
-                    curr = (curr + 1) % p.Count;
-                else
-                    curr = (curr - 1) % p.Count;
-                if (bestTail[curr] == bestTail[bestTail.Length - 1])
-                    back = true;
-                else if (bestTail[curr] == startPoint)
-                {
-                    back = false;
-                    Algorithm.UpdateAnts(ants, wayd, numCities, startPoint);
-                    Algorithm.UpdatePheromones(ants, wayd, numCities);
-                    bestTail = Algorithm.BestTrail(ants, wayd);
-                    Debug.Log(Algorithm.DisplayTail(bestTail) + " | " + Algorithm.Length(bestTail,wayd));
-                }
-            }
-        }
     }
     private void AddPoint()
     {
-        if (currLine == null)
-        {
-            currLine = Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>();
-        }
-
         p.Add(Instantiate(PointPref, GetMousePos(), Quaternion.identity, _ClickZone.transform).GetComponent<PointController>());
         p[p.Count - 1].GetComponentInChildren<TextMeshProUGUI>().text = p.Count + "";
-
-        currLine.AddPoint(p);
-
     }
+
+    public void StartAlgorithm()
+    {
+        if (p.Count >= 2)
+        {
+            CreateWay();
+
+            numCities = Algorithm.GetCount(wayd);
+
+            ants.Clear();
+            for (int i = 0; i < antCount; ++i)
+            {
+                int[] tail = Algorithm.RandomTrail(1, numCities);
+                ants.Add(new Ant(tail));
+            }
+
+            bestTail = Algorithm.BestTrail(ants, wayd);
+
+            Debug.Log(Algorithm.DisplayTail(bestTail));
+
+            Instantiate(AntPref, p[0].transform.position, Quaternion.identity, _SpawnAnt.transform).GetComponent<AntAi>().AddAnt(ants, wayd, p, numCities, bestTail, startPoint);
+            
+        }
+        else
+        {
+            Debug.LogError("Count < 2");
+        }
+    }
+    private void CreateWay()
+    {
+        foreach (var item in _ClickZone.GetComponentsInChildren<LineController>())
+        {
+            Destroy(item.gameObject);
+        }
+        foreach (var item in _ClickZone.GetComponentsInChildren<AntAi>())
+        {
+            Destroy(item.gameObject);
+        }
+
+        wayd.Clear();
+        for (int i = 1; i < p.Count + 1; i++)
+        {
+            for (int j = i + 1; j < p.Count + 1; j++)
+            {
+                wayd.Add(new WayData(i, j, i + j, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+            }
+        }
+        for (int i = 0; i < wayd.Count; i++)
+        {
+            wayd[i].lineC.AddPoint(p[wayd[i].first - 1], p[wayd[i].second - 1]);
+        }
+        Algorithm.AddReverse(wayd);
+    }
+
 
     public static Vector3 GetMousePos()
     {

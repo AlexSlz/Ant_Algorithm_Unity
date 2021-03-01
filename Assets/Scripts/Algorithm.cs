@@ -199,7 +199,7 @@ public class Algorithm
         List<WayData> wayp = new List<WayData>();
         foreach (var item in wayd)
         {
-            wayp.Add(new WayData(item.second, item.first, item.length));
+            wayp.Add(new WayData(item.second, item.first, item.length, null));
         }
         foreach (var item in wayp)
         {

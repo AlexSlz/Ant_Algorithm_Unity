@@ -5,29 +5,24 @@ using UnityEngine;
 public class LineController : MonoBehaviour
 {
     private LineRenderer lr;
-    private List<PointController> points;
+    public PointController first;
+    public PointController second;
 
     private void Awake()
     {
-        lr = GetComponent<LineRenderer>();
-        lr.positionCount = 0;
+        lr = GetComponent<LineRenderer>();    
+    }
 
-      
-    }
-    public void AddPoint(List<PointController> p)
+    public void AddPoint(PointController f, PointController s)
     {
-        lr.positionCount++;
-        points = p;
+        first = f;
+        second = s;
     }
+
     private void LateUpdate()
     {
-        if(points.Count >= 2)
-        {
-            for (int i = 0; i < points.Count; i++)
-            {
-                lr.SetPosition(i, points[i].transform.position);
-            }
-        }
+        lr.SetPosition(0, first.transform.position);
+        lr.SetPosition(1, second.transform.position);
     }
 
 }
