@@ -10,12 +10,12 @@ public class Main : MonoBehaviour
     public int antCount = 1;
     private int antSpeed = 0;
     [SerializeField] private TextMeshProUGUI SpeedText;
+    [SerializeField] private TextMeshProUGUI BestText;
     [SerializeField] private ClickScript _ClickZone;
     [SerializeField] private GameObject _SpawnAnt;
     [SerializeField] private GameObject PointPref;
     [SerializeField] private GameObject LinePref;
     [SerializeField] private GameObject AntPref;
-    private LineController currLine;
 
     List<Ant> ants = new List<Ant>();
     List<WayData> wayd = new List<WayData>();
@@ -29,7 +29,7 @@ public class Main : MonoBehaviour
     }
     public void SpeedUpdate(float value)
     {
-        antSpeed = Mathf.RoundToInt(value * 100);
+        antSpeed = Mathf.RoundToInt(value * 69);
         foreach (var item in _ClickZone.GetComponentsInChildren<AntAi>())
         {
             item.SpeedUpdate(antSpeed);
@@ -64,7 +64,7 @@ public class Main : MonoBehaviour
 
             Debug.Log(Algorithm.DisplayTail(bestTail));
 
-            Instantiate(AntPref, p[0].transform.position, Quaternion.identity, _SpawnAnt.transform).GetComponent<AntAi>().AddAnt(ants, wayd, p, numCities, bestTail, startPoint);
+            Instantiate(AntPref, p[0].transform.position, Quaternion.identity, _SpawnAnt.transform).GetComponent<AntAi>().AddAnt(ants, wayd, p, numCities, bestTail, startPoint, BestText);
             
         }
         else
@@ -84,6 +84,7 @@ public class Main : MonoBehaviour
         }
 
         wayd.Clear();
+        
         for (int i = 1; i < p.Count + 1; i++)
         {
             for (int j = i + 1; j < p.Count + 1; j++)
@@ -91,13 +92,29 @@ public class Main : MonoBehaviour
                 wayd.Add(new WayData(i, j, i + j, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
             }
         }
+        /*
+        wayd.Add(new WayData(1, 2, 12, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(1, 3, 9, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(1, 4, 11, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(1, 5, 2, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(1, 6, 2, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(2, 3, 13, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(2, 4, 9, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(2, 5, 10, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(2, 6, 7, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(3, 4, 5, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(3, 5, 11, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(3, 6, 6, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(4, 5, 3, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(4, 6, 17, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        wayd.Add(new WayData(5, 6, 13, Instantiate(LinePref, Vector3.zero, Quaternion.identity, _ClickZone.transform).GetComponent<LineController>()));
+        */
         for (int i = 0; i < wayd.Count; i++)
         {
             wayd[i].lineC.AddPoint(p[wayd[i].first - 1], p[wayd[i].second - 1]);
         }
         Algorithm.AddReverse(wayd);
     }
-
 
     public static Vector3 GetMousePos()
     {

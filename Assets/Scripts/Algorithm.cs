@@ -1,23 +1,30 @@
 ﻿using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 public class Algorithm
 {
 
-    static Random random = new Random();
+    static System.Random random = new System.Random();
 
-    static int alpha = 1;
-    static int beta = 1;
+    static float alpha;
+    static float beta;
 
-    static double rho = 0.01;
-    static double Q = 0.2;
+    static float rho;
+    static float Q;
 
     public static void UpdatePheromones(List<Ant> ants, List<WayData> wayd, int numCities)
     {
+
+        alpha = (float)numCities;
+        beta = (float)(numCities / 2) ;
+        Q = (float)numCities / 100;
+        rho = (float)numCities / 1000;
+
         foreach (var item in wayd)
         {
             bool flag = false;
-            for (int i = 0; i < ants.Count; i++)
+            for (int i = 0; i < ants.Count / 2; i++)
             {
                 for (int j = 0; j < ants[i].tail.Length - 1; j++)
                 {
@@ -91,6 +98,10 @@ public class Algorithm
             if (flag == true)
             {
                 taueta[i] = Math.Pow(wayd[i].tau, alpha) * Math.Pow((1.0 / wayd[i].length), beta);
+                if (taueta[i] < 0.000001)
+                    taueta[i] = 0.000001;
+                else if (taueta[i] > (double.MaxValue / (numCities * 100)))
+                    taueta[i] = double.MaxValue / (numCities * 100);
             }
             sum += taueta[i];
         }

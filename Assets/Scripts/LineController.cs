@@ -18,7 +18,16 @@ public class LineController : MonoBehaviour
         first = f;
         second = s;
     }
+    public void SetColor(float tau)
+    {
+        Gradient gradient = new Gradient();
+        gradient.SetKeys(
+            new GradientColorKey[] { new GradientColorKey(Color.green, 0.0f), new GradientColorKey(Color.green, 1.0f) },
+            new GradientAlphaKey[] { new GradientAlphaKey(tau, 0.0f), new GradientAlphaKey(tau, 1.0f) }
+        );
+        lr.colorGradient = gradient;
 
+    }
     private void LateUpdate()
     {
         lr.SetPosition(0, first.transform.position);
