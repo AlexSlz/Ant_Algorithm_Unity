@@ -16,10 +16,11 @@ public class Algorithm
     public static void UpdatePheromones(List<Ant> ants, List<WayData> wayd, int numCities)
     {
 
-        alpha = (float)numCities;
-        beta = (float)(numCities / 2) ;
-        Q = (float)numCities / 100;
-        rho = (float)numCities / 1000;
+        alpha = 1;//numCities;
+        beta = 1;//(numCities / 2);
+        Q = (float)numCities / 10;
+        rho = (float)numCities / 100;
+        Debug.Log("a " + alpha + " | b " + beta + " | Q " + Q + " | r " + rho);
 
         foreach (var item in wayd)
         {
@@ -189,7 +190,7 @@ public class Algorithm
         for (int i = 0; i < ants.Length - 1; i++)
         {
             result += wayd.Find(item => item.first == ants[i] && item.second == ants[i + 1]).length;
-            //Console.WriteLine(ants[i] + " " + ants[i + 1] + " | " + wayd.Find(item => item.first == ants[i] && item.second == ants[i + 1]).length + " ");
+            //Debug.Log(ants[i] + " " + ants[i + 1] + " | " + wayd.Find(item => item.first == ants[i] && item.second == ants[i + 1]).length + " ");
         }
         return result;
     }

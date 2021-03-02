@@ -111,7 +111,7 @@ public class Main : MonoBehaviour
         */
         for (int i = 0; i < wayd.Count; i++)
         {
-            wayd[i].lineC.AddPoint(p[wayd[i].first - 1], p[wayd[i].second - 1]);
+            wayd[i].lineC.AddPoint(p[wayd[i].first - 1], p[wayd[i].second - 1], wayd[i]);
         }
         Algorithm.AddReverse(wayd);
     }

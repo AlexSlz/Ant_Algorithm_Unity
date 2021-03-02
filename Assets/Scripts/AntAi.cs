@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class AntAi : MonoBehaviour
 {
+
+    int time;
+
     private int curr = 0;
     private bool back = false;
     int antSpeed;
@@ -28,6 +31,7 @@ public class AntAi : MonoBehaviour
 
     public void AddAnt(List<Ant> _ants, List<WayData> _wayd, List<PointController> _p, int num, int[] b, int s, TextMeshProUGUI _BestText)
     {
+        time = 500;
         ants = _ants;
         wayd = _wayd;
         p = _p;
@@ -68,24 +72,48 @@ public class AntAi : MonoBehaviour
         }
     }
 
-
     private void NextIteration()
     {
-        Algorithm.UpdateAnts(ants, wayd, numCities, startPoint);
-        Algorithm.UpdatePheromones(ants, wayd, numCities);
-        for (int i = 0; i < wayd.Count / 2; i++)
+        if (time > 0)
         {
-            wayd[i].lineC.SetColor((float)wayd[i].tau);
+            Algorithm.UpdateAnts(ants, wayd, numCities, startPoint);
+            Algorithm.UpdatePheromones(ants, wayd, numCities);
+            for (int i = 0; i < wayd.Count / 2; i++)
+            {
+                wayd[i].lineC.SetColor((float)wayd[i].tau);
+            }
+            int[] currBestTrail = Algorithm.BestTrail(ants, wayd);
+            double currBestLength = Algorithm.Length(currBestTrail, wayd);
+            if (currBestLength < bestLength || currBestLength == bestLength)
+            {
+                bestLength = currBestLength;
+                bestTail = currBestTrail;
+            }
+            BestText.text = "Best Way: \n" + Algorithm.DisplayTail(bestTail) + " | " + Algorithm.Length(bestTail, wayd);
+            Debug.Log("Best Way: \n" + Algorithm.DisplayTail(currBestTrail) + " | " + Algorithm.Length(currBestTrail, wayd));
+            time--;
         }
-        int[] currBestTrail = Algorithm.BestTrail(ants, wayd);
-        double currBestLength = Algorithm.Length(currBestTrail, wayd);
-        if (currBestLength < bestLength || currBestLength == bestLength)
+        else
         {
-            bestLength = currBestLength;
-            bestTail = currBestTrail;
+            for (int i = 0; i < wayd.Count - 1; i++)
+            {
+                for (int j = 0; j < bestTail.Length - 1; j++)
+                {
+                    if (wayd[i].first == bestTail[j] && wayd[i].second == bestTail[j + 1])
+                    {
+                        if (wayd[i].lineC == null)
+                            wayd[wayd.IndexOf(wayd.Find(item => item.second == bestTail[j] && item.first == bestTail[j + 1]))].lineC.SetColor(100);
+                        else
+                            wayd[i].lineC.SetColor(100);
+                        break;
+                    }
+                    else
+                    {
+                        if (wayd[i].lineC != null)
+                            wayd[i].lineC.SetColor(0);
+                    }
+                }
+            }
         }
-        BestText.text = "Best Way: \n" + Algorithm.DisplayTail(bestTail) + " | " + Algorithm.Length(bestTail, wayd);
-        Debug.Log("Best Way: \n" + Algorithm.DisplayTail(currBestTrail) + " | " + Algorithm.Length(currBestTrail, wayd));
-
     }
 }
