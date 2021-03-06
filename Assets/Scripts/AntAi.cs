@@ -19,32 +19,38 @@ public class AntAi : MonoBehaviour
 
     private TextMeshProUGUI BestText;
 
+    private TextMeshProUGUI AntVisual;
+
+
     int numCities;
     int[] bestTail;
     double bestLength;
-    int startPoint;
+
+    private void Start()
+    {
+        AntVisual = this.GetComponent<TextMeshProUGUI>();
+    }
 
     public void SpeedUpdate(int speed)
     {
         antSpeed = speed;
     }
 
-    public void AddAnt(List<Ant> _ants, List<WayData> _wayd, List<PointController> _p, int num, int[] b, int s, TextMeshProUGUI _BestText)
+    public void AddAnt(List<Ant> _ants, List<WayData> _wayd, List<PointController> _p, int num, int[] b, TextMeshProUGUI _BestText)
     {
-        time = 500;
+        time = _p.Count * 100;
         ants = _ants;
         wayd = _wayd;
         p = _p;
         numCities = num;
         bestTail = b;
-        startPoint = s;
         bestLength = Algorithm.Length(bestTail, wayd);
         BestText = _BestText;
     }
 
     private void LateUpdate()
     {
-        if (antSpeed < 69)
+        if (antSpeed < Main.antMaxSpeed)
         {
             if (transform.position != p[bestTail[curr] - 1].transform.position)
             {
@@ -52,14 +58,14 @@ public class AntAi : MonoBehaviour
             }
             else
             {
+                AntVisual.enabled = true;
                 if (!back)
                     curr = (curr + 1) % p.Count;
                 else
                     curr = (curr - 1) % p.Count;
-                  //wayd[wayd.IndexOf(wayd.Find(item => item.first == bestTail[curr] && item.second == bestTail[curr + 1]))].lineC.SetColor();
                 if (bestTail[curr] == bestTail[bestTail.Length - 1])
                     back = true;
-                else if (bestTail[curr] == startPoint)
+                else if (bestTail[curr] == Main.startPoint)
                 {
                     back = false;
                     NextIteration();
@@ -69,6 +75,7 @@ public class AntAi : MonoBehaviour
         else
         {
             NextIteration();
+            AntVisual.enabled = false;
         }
     }
 
@@ -76,11 +83,11 @@ public class AntAi : MonoBehaviour
     {
         if (time > 0)
         {
-            Algorithm.UpdateAnts(ants, wayd, numCities, startPoint);
+            Algorithm.UpdateAnts(ants, wayd, numCities, Main.startPoint);
             Algorithm.UpdatePheromones(ants, wayd, numCities);
             for (int i = 0; i < wayd.Count / 2; i++)
             {
-                wayd[i].lineC.SetColor((float)wayd[i].tau);
+                wayd[i].lineC.SetColor((float)wayd[i].tau, true);
             }
             int[] currBestTrail = Algorithm.BestTrail(ants, wayd);
             double currBestLength = Algorithm.Length(currBestTrail, wayd);
@@ -89,29 +96,39 @@ public class AntAi : MonoBehaviour
                 bestLength = currBestLength;
                 bestTail = currBestTrail;
             }
-            BestText.text = "Best Way: \n" + Algorithm.DisplayTail(bestTail) + " | " + Algorithm.Length(bestTail, wayd);
+            BestText.text = "Текущий путь: \n" + Algorithm.DisplayTail(currBestTrail) + " | " + Algorithm.Length(currBestTrail, wayd);
             Debug.Log("Best Way: \n" + Algorithm.DisplayTail(currBestTrail) + " | " + Algorithm.Length(currBestTrail, wayd));
             time--;
         }
         else
         {
-            for (int i = 0; i < wayd.Count - 1; i++)
+            BestText.text = "Лучший путь: \n" + Algorithm.DisplayTail(bestTail) + " | " + Algorithm.Length(bestTail, wayd);
+            List<int> knowWay = new List<int>();
+
+            for (int i = 0; i < bestTail.Length - 1; i++)
             {
-                for (int j = 0; j < bestTail.Length - 1; j++)
+                for (int j = 0; j < wayd.Count - 1; j++)
                 {
-                    if (wayd[i].first == bestTail[j] && wayd[i].second == bestTail[j + 1])
+                    if (bestTail[i] == wayd[j].first && bestTail[i + 1] == wayd[j].second)
                     {
-                        if (wayd[i].lineC == null)
-                            wayd[wayd.IndexOf(wayd.Find(item => item.second == bestTail[j] && item.first == bestTail[j + 1]))].lineC.SetColor(100);
-                        else
-                            wayd[i].lineC.SetColor(100);
+                        wayd[j].lineC.visible = true;
+                        break;
+                    }else if (bestTail[i] == wayd[j].second && bestTail[i + 1] == wayd[j].first)
+                    {
+                        wayd.Find(item => item.first == bestTail[i] && item.second == bestTail[i + 1]).lineC.visible = true;
                         break;
                     }
-                    else
-                    {
-                        if (wayd[i].lineC != null)
-                            wayd[i].lineC.SetColor(0);
-                    }
+                }
+            }
+            for (int i = 0; i < wayd.Count - 1; i++)
+            {
+                if (!wayd[i].lineC.visible)
+                {
+                    wayd[i].lineC.SetColor(0, false);
+                }
+                else
+                {
+                    wayd[i].lineC.SetColor(100, true);
                 }
             }
         }

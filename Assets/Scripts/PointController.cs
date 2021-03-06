@@ -7,7 +7,6 @@ public class PointController : MonoBehaviour, IDragHandler, IPointerClickHandler
 {
 
     public Action<PointController> OnDragEvent;
-
     public void OnDrag(PointerEventData eventData)
     {
         this.transform.position = Main.GetMousePos();

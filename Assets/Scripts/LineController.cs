@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class LineController : MonoBehaviour
 {
-
-    public float t = 0;
+    float t = 0;
     [SerializeField] private TextMeshProUGUI LenText;
     private LineRenderer lr;
     public PointController first;
     public PointController second;
+    public bool visible = false;
 
     private void Awake()
     {
@@ -22,9 +22,10 @@ public class LineController : MonoBehaviour
         first = f;
         second = s;
         LenText.text = w.length.ToString();
+        this.name = LenText.text;
         Instantiate(LenText, Vector3.zero, Quaternion.identity, this.transform);
     }
-    public void SetColor(float tau)
+    public void SetColor(float tau, bool _bool)
     {
         t = tau;
         Gradient gradient = new Gradient();
@@ -32,6 +33,9 @@ public class LineController : MonoBehaviour
             new GradientColorKey[] { new GradientColorKey(Color.green, 0.0f), new GradientColorKey(Color.green, 1.0f) },
             new GradientAlphaKey[] { new GradientAlphaKey(tau, 0.0f), new GradientAlphaKey(tau, 1.0f) }
         );
+        
+        if(GetComponentInChildren<TextMeshProUGUI>() != null)
+            GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(_bool);
         lr.colorGradient = gradient;
 
     }

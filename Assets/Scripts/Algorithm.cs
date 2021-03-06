@@ -7,20 +7,20 @@ public class Algorithm
 
     static System.Random random = new System.Random();
 
-    static float alpha;
-    static float beta;
+    public static double alpha = 0;
+    public static double beta = 0;
 
-    static float rho;
-    static float Q;
+    public static double rho = 0;
+    public static double Q = 0;
 
     public static void UpdatePheromones(List<Ant> ants, List<WayData> wayd, int numCities)
     {
 
-        alpha = 1;//numCities;
-        beta = 1;//(numCities / 2);
-        Q = (float)numCities / 10;
-        rho = (float)numCities / 100;
-        Debug.Log("a " + alpha + " | b " + beta + " | Q " + Q + " | r " + rho);
+        //alpha = 1;//numCities;
+        //beta = 1;//(numCities / 2);
+        //Q = (float)numCities / 10;
+        //rho = (float)numCities / 100;
+        //Debug.Log("a " + alpha + " | b " + beta + " | Q " + Q + " | r " + rho);
 
         foreach (var item in wayd)
         {
@@ -56,22 +56,25 @@ public class Algorithm
         int[] trail = new int[numCities];
         List<double> knowWay = new List<double>();
         trail[0] = startPoint;
-        knowWay.Add(startPoint);
+        if (startPoint == numCities)
+            knowWay.Add(0);
+        else
+            knowWay.Add(startPoint);
         for (int i = 1; i < trail.Length; i++)
         {
-            int next = NextPoint(wayd, numCities, startPoint, knowWay);
+            int next = NextPoint(wayd, numCities, knowWay);
             if (next == 0)
                 trail[i] = numCities;
             else
-                trail[i] = next;
+            trail[i] = next;
             knowWay.Add(next);
         }
         //Console.WriteLine("tail end");
         return trail;
     }
-    static int NextPoint(List<WayData> wayd, int numCities, int startPoint, List<double> knowWay)
+    static int NextPoint(List<WayData> wayd, int numCities, List<double> knowWay)
     {
-        double[] probs = MoveProbs(wayd, numCities, startPoint, knowWay);
+        double[] probs = MoveProbs(wayd, numCities, knowWay);
         //for (int i = 0; i < probs.Length; i++)
         //    Console.WriteLine(probs[i]);
         int ok = 0;
@@ -84,7 +87,7 @@ public class Algorithm
         //Console.WriteLine("Winner: " + ok + " p: " + probs[ok]);
         return ok;
     }
-    static double[] MoveProbs(List<WayData> wayd, int numCities, int startPoint, List<double> knowWay)
+    static double[] MoveProbs(List<WayData> wayd, int numCities, List<double> knowWay)
     {
         double[] taueta = new double[numCities];
         double sum = 0.0;
@@ -189,7 +192,7 @@ public class Algorithm
         double result = 0;
         for (int i = 0; i < ants.Length - 1; i++)
         {
-            result += wayd.Find(item => item.first == ants[i] && item.second == ants[i + 1]).length;
+            result += wayd.Find(item => (item.first == ants[i] && item.second == ants[i + 1]) || (item.second == ants[i] && item.first == ants[i + 1])).length;
             //Debug.Log(ants[i] + " " + ants[i + 1] + " | " + wayd.Find(item => item.first == ants[i] && item.second == ants[i + 1]).length + " ");
         }
         return result;
@@ -211,7 +214,7 @@ public class Algorithm
         List<WayData> wayp = new List<WayData>();
         foreach (var item in wayd)
         {
-            wayp.Add(new WayData(item.second, item.first, item.length, null));
+            wayp.Add(new WayData(item.second, item.first, item.length, item.lineC));
         }
         foreach (var item in wayp)
         {
