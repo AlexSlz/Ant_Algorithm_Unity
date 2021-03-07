@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Main : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class Main : MonoBehaviour
     List<WayData> wayd = new List<WayData>();
     public List<PointController> p = new List<PointController>();
 
+    public static PointController SelectedPoint;
+
     int numCities;
     private int[] bestTail;
     void Start()
@@ -44,16 +47,46 @@ public class Main : MonoBehaviour
         else
         SpeedText.text = antSpeed + "";
     }
-    private void Update()
+    private void LateUpdate()
     {
+        if(SelectedPoint != null)
+        {
+            if (SelectedPoint.mouseDown)
+            {
+                Main.SelectedPoint.GetComponent<Image>().fillAmount -= 0.002f;
+            }
+            foreach (var item in p)
+            {
+                if (item.GetComponent<Image>().fillAmount <= 0)
+                {
+                    ResetAlgorithm();
+                    DeletePoint(item);
+                    Destroy(item.gameObject);
+                    break;
+                }
+            }
+        }
     }
     private void AddPoint()
     {
-        p.Add(Instantiate(PointPref, GetMousePos(), Quaternion.identity, _ClickZone.transform).GetComponent<PointController>());
-        p[p.Count - 1].GetComponentInChildren<TextMeshProUGUI>().text = p.Count + "";
-        SettingsSet.PointCount = p.Count;
+        if (p.Count <= 20)
+        {
+            p.Add(Instantiate(PointPref, GetMousePos(), Quaternion.identity, _ClickZone.transform).GetComponent<PointController>());
+            p[p.Count - 1].GetComponentInChildren<TextMeshProUGUI>().text = p.Count + "";
+            SettingsSet.PointCount = p.Count;
+        }
     }
 
+    public void DeletePoint(PointController _point)
+    {
+        p.RemoveAt(p.IndexOf(_point));
+        int p_c = 1;
+        foreach (var item in p)
+        {
+            item.GetComponentInChildren<TextMeshProUGUI>().text = p_c + "";
+            p_c++;
+        }
+    }
 
 
     public void ResetAlgorithm()

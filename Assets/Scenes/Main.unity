@@ -1553,7 +1553,7 @@ MonoBehaviour:
     type: 3}
   LinePref: {fileID: 4505491712152903349, guid: fbf04f265e8d8ef47b7d68a06400b2c6,
     type: 3}
-  AntPref: {fileID: 4668775148253411420, guid: 75aa1faf0c154e546b11c33370c98174, type: 3}
+  AntPref: {fileID: 1580776910293591043, guid: 75aa1faf0c154e546b11c33370c98174, type: 3}
   Settings: {fileID: 206432074}
   p: []
 --- !u!20 &519420031
@@ -4893,7 +4893,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -184, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1803749032

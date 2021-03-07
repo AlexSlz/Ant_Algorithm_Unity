@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class AntAi : MonoBehaviour
 {
@@ -19,7 +19,7 @@ public class AntAi : MonoBehaviour
 
     private TextMeshProUGUI BestText;
 
-    private TextMeshProUGUI AntVisual;
+    private Image AntVisual;
 
 
     int numCities;
@@ -28,7 +28,7 @@ public class AntAi : MonoBehaviour
 
     private void Start()
     {
-        AntVisual = this.GetComponent<TextMeshProUGUI>();
+        AntVisual = this.GetComponentInChildren<Image>();
     }
 
     public void SpeedUpdate(int speed)
@@ -55,6 +55,8 @@ public class AntAi : MonoBehaviour
             if (transform.position != p[bestTail[curr] - 1].transform.position)
             {
                 transform.position = Vector2.MoveTowards(transform.position, p[bestTail[curr] - 1].transform.position, antSpeed * Time.deltaTime);
+                Vector2 _dir = new Vector2(p[bestTail[curr] - 1].transform.position.x - transform.position.x, p[bestTail[curr] - 1].transform.position.y - transform.position.y);
+                transform.up = _dir;
             }
             else
             {

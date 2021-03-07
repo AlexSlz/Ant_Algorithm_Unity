@@ -15,7 +15,7 @@ public class ClickScript : MonoBehaviour, IPointerClickHandler
         }
         else if(eventData.pointerId == -1)
         {
-
+            Main.SelectedPoint = null;
         }
     }
 }
