@@ -31,7 +31,10 @@ public class LineController : MonoBehaviour
     }
     public void SetColor(float tau, bool _bool)
     {
-        t = tau;
+        if (_bool)
+            t = tau;
+        else if (!_bool)
+            t = 0.5f;
         Gradient gradient = new Gradient();
         gradient.SetKeys(
             new GradientColorKey[] { new GradientColorKey(_color, 0.0f), new GradientColorKey(_color, 1.0f) },

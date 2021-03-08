@@ -13,6 +13,9 @@ public class AntAi : MonoBehaviour
     private bool back = false;
     int antSpeed = 1;
 
+    private bool DeleteWrongWay = true;
+
+
     List<Ant> ants;
     List<WayData> wayd;
     List<PointController> p;
@@ -20,6 +23,7 @@ public class AntAi : MonoBehaviour
     private TextMeshProUGUI BestText;
 
     [SerializeField] private Image AntVisual;
+    [SerializeField] private SettingsSet _settings;
 
 
     int numCities;
@@ -32,7 +36,7 @@ public class AntAi : MonoBehaviour
         antSpeed = speed;
     }
 
-    public void AddAnt(List<Ant> _ants, List<WayData> _wayd, List<PointController> _p, int num, int[] b, TextMeshProUGUI _BestText)
+    public void AddAnt(List<Ant> _ants, List<WayData> _wayd, List<PointController> _p, int num, int[] b, TextMeshProUGUI _BestText, SettingsSet set)
     {
         time = _p.Count * 100;
         ants = _ants;
@@ -42,6 +46,7 @@ public class AntAi : MonoBehaviour
         bestTail = b;
         bestLength = Algorithm.Length(bestTail, wayd);
         BestText = _BestText;
+        _settings = set;
     }
 
     private void LateUpdate()
@@ -85,7 +90,7 @@ public class AntAi : MonoBehaviour
             Algorithm.UpdatePheromones(ants, wayd, numCities);
             for (int i = 0; i < wayd.Count / 2; i++)
             {
-                wayd[i].lineC.SetColor((float)wayd[i].tau, true);
+                wayd[i].lineC.SetColor((float)wayd[i].tau * 2, true);
             }
             int[] currBestTrail = Algorithm.BestTrail(ants, wayd);
             double currBestLength = Algorithm.Length(currBestTrail, wayd);
@@ -118,11 +123,14 @@ public class AntAi : MonoBehaviour
                     }
                 }
             }
+
+            DeleteWrongWay = _settings.Toggle_Del.isOn;
+
             for (int i = 0; i < wayd.Count - 1; i++)
             {
                 if (!wayd[i].lineC.visible)
                 {
-                    wayd[i].lineC.SetColor(0, false);
+                    wayd[i].lineC.SetColor(0, !DeleteWrongWay);
                 }
                 else
                 {

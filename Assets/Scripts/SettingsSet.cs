@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SettingsSet : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class SettingsSet : MonoBehaviour
     [SerializeField] private TMP_InputField _Beta;
     [SerializeField] private TMP_InputField _Q;
     [SerializeField] private TMP_InputField _RHO;
+    [SerializeField] public Toggle Toggle_Del;
 
     int o_old;
 

@@ -54,11 +54,11 @@ public class Main : MonoBehaviour
         {
             if (SelectedPoint.mouseDown)
             {
-                Main.SelectedPoint.GetComponent<Image>().fillAmount -= 0.005f;
+                Main.SelectedPoint.Timer.fillAmount += 0.009f;
             }
             foreach (var item in p)
             {
-                if (item.GetComponent<Image>().fillAmount <= 0)
+                if (item.Timer.fillAmount == 1)
                 {
                     ResetAlgorithm();
                     DeletePoint(item);
@@ -123,7 +123,7 @@ public class Main : MonoBehaviour
 
             Debug.Log(Algorithm.DisplayTail(bestTail));
 
-            Instantiate(AntPref, p[startPoint - 1].transform.position, Quaternion.identity, _SpawnAnt.transform).GetComponent<AntAi>().AddAnt(ants, wayd, p, numCities, bestTail, BestText);
+            Instantiate(AntPref, p[startPoint - 1].transform.position, Quaternion.identity, _SpawnAnt.transform).GetComponent<AntAi>().AddAnt(ants, wayd, p, numCities, bestTail, BestText,Settings);
             
         }
         else
@@ -147,7 +147,8 @@ public class Main : MonoBehaviour
                 q = true;
             }
         }
-        alert.SetAlert("Растояние некоторых точек автоматически заполнились.");
+        if(q)
+            alert.SetAlert("Растояние некоторых точек автоматически заполнились.");
     }
 
     private void CreateWay()

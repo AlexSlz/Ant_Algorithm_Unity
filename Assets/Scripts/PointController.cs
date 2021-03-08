@@ -8,6 +8,7 @@ public class PointController : MonoBehaviour, IDragHandler, IPointerDownHandler,
 {
     public bool mouseDown;
     public Action<PointController> OnDragEvent;
+    [SerializeField] public Image Timer;
     public void OnDrag(PointerEventData eventData)
     {
         mouseDown = false;
@@ -16,9 +17,13 @@ public class PointController : MonoBehaviour, IDragHandler, IPointerDownHandler,
 
     void LateUpdate()
     {
-        if (GetComponent<Image>().fillAmount <= 1)
+        if(this.transform.position.y >= Screen.height / 100 || this.transform.position.y <= -(Screen.height / 125))
+            this.transform.position = Vector3.zero;
+        else if(this.transform.position.x >= Screen.width / 101 || this.transform.position.x <= -(Screen.width / 101))
+            this.transform.position = Vector3.zero;
+        if (Timer.fillAmount <= 1)
         {
-            GetComponent<Image>().fillAmount += 0.003f;
+            Timer.fillAmount -= 0.007f;
         }
     }
     public void OnPointerDown(PointerEventData eventData)
