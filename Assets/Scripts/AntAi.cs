@@ -28,6 +28,7 @@ public class AntAi : MonoBehaviour
 
     int numCities;
     int[] bestTail;
+    int[] currBestTrail;
     double bestLength;
 
 
@@ -44,6 +45,7 @@ public class AntAi : MonoBehaviour
         p = _p;
         numCities = num;
         bestTail = b;
+        currBestTrail = b;
         bestLength = Algorithm.Length(bestTail, wayd);
         BestText = _BestText;
         _settings = set;
@@ -53,10 +55,10 @@ public class AntAi : MonoBehaviour
     {
         if (antSpeed < Main.antMaxSpeed)
         {
-            if (transform.position != p[bestTail[curr] - 1].transform.position)
+            if (transform.position != p[currBestTrail[curr] - 1].transform.position)
             {
-                transform.position = Vector2.MoveTowards(transform.position, p[bestTail[curr] - 1].transform.position, antSpeed * Time.deltaTime);
-                Vector2 _dir = new Vector2(p[bestTail[curr] - 1].transform.position.x - transform.position.x, p[bestTail[curr] - 1].transform.position.y - transform.position.y);
+                transform.position = Vector2.MoveTowards(transform.position, p[currBestTrail[curr] - 1].transform.position, antSpeed * Time.deltaTime);
+                Vector2 _dir = new Vector2(p[currBestTrail[curr] - 1].transform.position.x - transform.position.x, p[currBestTrail[curr] - 1].transform.position.y - transform.position.y);
                 transform.up = _dir;
             }
             else
@@ -66,9 +68,9 @@ public class AntAi : MonoBehaviour
                     curr = (curr + 1) % p.Count;
                 else
                     curr = (curr - 1) % p.Count;
-                if (bestTail[curr] == bestTail[bestTail.Length - 1])
+                if (currBestTrail[curr] == currBestTrail[currBestTrail.Length - 1])
                     back = true;
-                else if (bestTail[curr] == Main.startPoint)
+                else if (currBestTrail[curr] == Main.startPoint)
                 {
                     back = false;
                     NextIteration();
@@ -90,9 +92,10 @@ public class AntAi : MonoBehaviour
             Algorithm.UpdatePheromones(ants, wayd, numCities);
             for (int i = 0; i < wayd.Count / 2; i++)
             {
-                wayd[i].lineC.SetColor((float)wayd[i].tau * 2, true);
+                wayd[i].lineC.SetColor((float)wayd[i].tau, true);
+                Debug.Log(wayd[i].first + " -> " + wayd[i].second + " | "+ wayd[i].tau);
             }
-            int[] currBestTrail = Algorithm.BestTrail(ants, wayd);
+            currBestTrail = Algorithm.BestTrail(ants, wayd);
             double currBestLength = Algorithm.Length(currBestTrail, wayd);
             if (currBestLength < bestLength || currBestLength == bestLength)
             {
@@ -105,6 +108,7 @@ public class AntAi : MonoBehaviour
         }
         else
         {
+            currBestTrail = bestTail;
             BestText.text = "Лучший путь: \n" + Algorithm.DisplayTail(bestTail) + " | " + Algorithm.Length(bestTail, wayd);
             List<int> knowWay = new List<int>();
 
@@ -130,7 +134,7 @@ public class AntAi : MonoBehaviour
             {
                 if (!wayd[i].lineC.visible)
                 {
-                    wayd[i].lineC.SetColor(0, !DeleteWrongWay);
+                    wayd[i].lineC.SetColor(0.5f, !DeleteWrongWay);
                 }
                 else
                 {

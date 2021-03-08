@@ -54,7 +54,7 @@ public class Main : MonoBehaviour
         {
             if (SelectedPoint.mouseDown)
             {
-                Main.SelectedPoint.Timer.fillAmount += 0.009f;
+                Main.SelectedPoint.Timer.fillAmount += (float)0.09;
             }
             foreach (var item in p)
             {

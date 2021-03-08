@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class LineController : MonoBehaviour
 {
-    float t = 0;
     [SerializeField] private TextMeshProUGUI LenText;
     private LineRenderer lr;
     public PointController first;
@@ -31,10 +30,8 @@ public class LineController : MonoBehaviour
     }
     public void SetColor(float tau, bool _bool)
     {
-        if (_bool)
-            t = tau;
-        else if (!_bool)
-            t = 0.5f;
+        if (_bool == false)
+            tau = 0;
         Gradient gradient = new Gradient();
         gradient.SetKeys(
             new GradientColorKey[] { new GradientColorKey(_color, 0.0f), new GradientColorKey(_color, 1.0f) },

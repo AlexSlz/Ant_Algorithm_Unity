@@ -7,11 +7,11 @@ public class Algorithm
 
     static System.Random random = new System.Random();
 
-    public static double alpha = 0;
-    public static double beta = 0;
+    public static float alpha = 1;
+    public static float beta = 1;
 
-    public static double rho = 0;
-    public static double Q = 0;
+    public static float rho = 0.01f;
+    public static float Q = 0.2f;
 
     public static void UpdatePheromones(List<Ant> ants, List<WayData> wayd, int numCities)
     {
@@ -102,8 +102,8 @@ public class Algorithm
             if (flag == true)
             {
                 taueta[i] = Math.Pow(wayd[i].tau, alpha) * Math.Pow((1.0 / wayd[i].length), beta);
-                if (taueta[i] < 0.000001)
-                    taueta[i] = 0.000001;
+                if (taueta[i] < 0.0001)
+                    taueta[i] = 0.0001;
                 else if (taueta[i] > (double.MaxValue / (numCities * 100)))
                     taueta[i] = double.MaxValue / (numCities * 100);
             }

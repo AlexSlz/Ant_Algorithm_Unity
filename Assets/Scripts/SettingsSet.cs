@@ -86,18 +86,18 @@ public class SettingsSet : MonoBehaviour
     void SetSettings()
     {
         if (_Alpha.text == "" || _Alpha.text == "0")
-            _Alpha.text = "1";
-        Algorithm.alpha = Convert.ToDouble(_Alpha.text);
+            _Alpha.text = Algorithm.alpha + "";
+        Algorithm.alpha = Convert.ToSingle(_Alpha.text);
 
         if (_Beta.text == "" || _Beta.text == "0")
-            _Beta.text = "1";
-        Algorithm.beta = Convert.ToDouble(_Beta.text);
+            _Beta.text = Algorithm.beta + "";
+        Algorithm.beta = Convert.ToSingle(_Beta.text);
         if (_Q.text == "" || _Q.text == "0")
-            _Q.text = "0,2";
-        Algorithm.Q = Convert.ToDouble(_Q.text);
+            _Q.text = Algorithm.Q + "";
+        Algorithm.Q = Convert.ToSingle(_Q.text);
         if (_RHO.text == "" || _RHO.text == "0")
-            _RHO.text = "0,01";
-        Algorithm.rho = Convert.ToDouble(_RHO.text);
+            _RHO.text = Algorithm.rho + "";
+        Algorithm.rho = Convert.ToSingle(_RHO.text);
     }
 
 }
