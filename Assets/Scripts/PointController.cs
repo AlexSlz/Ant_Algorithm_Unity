@@ -18,7 +18,7 @@ public class PointController : MonoBehaviour, IDragHandler, IPointerDownHandler,
     {
         if (GetComponent<Image>().fillAmount <= 1)
         {
-            GetComponent<Image>().fillAmount += 0.001f;
+            GetComponent<Image>().fillAmount += 0.003f;
         }
     }
     public void OnPointerDown(PointerEventData eventData)

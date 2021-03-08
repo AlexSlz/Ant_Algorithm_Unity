@@ -11,7 +11,7 @@ public class AntAi : MonoBehaviour
 
     private int curr = 0;
     private bool back = false;
-    int antSpeed;
+    int antSpeed = 1;
 
     List<Ant> ants;
     List<WayData> wayd;
@@ -19,17 +19,13 @@ public class AntAi : MonoBehaviour
 
     private TextMeshProUGUI BestText;
 
-    private Image AntVisual;
+    [SerializeField] private Image AntVisual;
 
 
     int numCities;
     int[] bestTail;
     double bestLength;
 
-    private void Start()
-    {
-        AntVisual = this.GetComponentInChildren<Image>();
-    }
 
     public void SpeedUpdate(int speed)
     {

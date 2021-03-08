@@ -20,6 +20,7 @@ public class Main : MonoBehaviour
     [SerializeField] private GameObject LinePref;
     [SerializeField] private GameObject AntPref;
     [SerializeField] private SettingsSet Settings;
+    [SerializeField] private Alert alert;
 
     List<double> InputData = new List<double>();
 
@@ -53,7 +54,7 @@ public class Main : MonoBehaviour
         {
             if (SelectedPoint.mouseDown)
             {
-                Main.SelectedPoint.GetComponent<Image>().fillAmount -= 0.002f;
+                Main.SelectedPoint.GetComponent<Image>().fillAmount -= 0.005f;
             }
             foreach (var item in p)
             {
@@ -62,6 +63,7 @@ public class Main : MonoBehaviour
                     ResetAlgorithm();
                     DeletePoint(item);
                     Destroy(item.gameObject);
+                    SettingsSet.PointCount = p.Count;
                     break;
                 }
             }
@@ -132,6 +134,7 @@ public class Main : MonoBehaviour
 
     void GetInputData()
     {
+        bool q = false;
         InputData.Clear();
         List<GameObject> temp = Settings.GetInput();
         for (int i = 0; i < temp.Count; i++)
@@ -139,8 +142,12 @@ public class Main : MonoBehaviour
             if (temp[i].GetComponentInChildren<TMP_InputField>().text != "")
                 InputData.Add(Convert.ToDouble(temp[i].GetComponentInChildren<TMP_InputField>().text));
             else
+            {
                 InputData.Add(UnityEngine.Random.Range(i + 1, (i + 1) * 10));
+                q = true;
+            }
         }
+        alert.SetAlert("Растояние некоторых точек автоматически заполнились.");
     }
 
     private void CreateWay()

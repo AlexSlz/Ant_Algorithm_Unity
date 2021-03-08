@@ -13,6 +13,7 @@ public class SettingsSet : MonoBehaviour
     [SerializeField] private GameObject AddZone;
     [SerializeField] private GameObject Prefab;
 
+    [SerializeField] private Alert _alert;
 
     [SerializeField] private TMP_InputField _Alpha;
     [SerializeField] private TMP_InputField _Beta;
@@ -40,7 +41,7 @@ public class SettingsSet : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Count < 2");
+            _alert.SetAlert("Нужно добавить больше 2 точек.");
         }
     }
 
@@ -59,7 +60,6 @@ public class SettingsSet : MonoBehaviour
         int o = PointCount;
         if (o_old != o)
         {
-            Debug.Log("REcReate");
             foreach (var item in Inputs)
             {
                 Destroy(item.gameObject);
@@ -83,9 +83,18 @@ public class SettingsSet : MonoBehaviour
 
     void SetSettings()
     {
+        if (_Alpha.text == "" || _Alpha.text == "0")
+            _Alpha.text = "1";
         Algorithm.alpha = Convert.ToDouble(_Alpha.text);
+
+        if (_Beta.text == "" || _Beta.text == "0")
+            _Beta.text = "1";
         Algorithm.beta = Convert.ToDouble(_Beta.text);
+        if (_Q.text == "" || _Q.text == "0")
+            _Q.text = "0,2";
         Algorithm.Q = Convert.ToDouble(_Q.text);
+        if (_RHO.text == "" || _RHO.text == "0")
+            _RHO.text = "0,01";
         Algorithm.rho = Convert.ToDouble(_RHO.text);
     }
 

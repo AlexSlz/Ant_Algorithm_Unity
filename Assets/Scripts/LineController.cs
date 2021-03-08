@@ -13,8 +13,11 @@ public class LineController : MonoBehaviour
     public PointController second;
     public bool visible = false;
 
+    private Color _color = new Color(130f / 255f, 101f / 255f, 62f / 255f);
+
     private void Awake()
     {
+
         lr = GetComponent<LineRenderer>();    
     }
 
@@ -31,7 +34,7 @@ public class LineController : MonoBehaviour
         t = tau;
         Gradient gradient = new Gradient();
         gradient.SetKeys(
-            new GradientColorKey[] { new GradientColorKey(Color.green, 0.0f), new GradientColorKey(Color.green, 1.0f) },
+            new GradientColorKey[] { new GradientColorKey(_color, 0.0f), new GradientColorKey(_color, 1.0f) },
             new GradientAlphaKey[] { new GradientAlphaKey(tau, 0.0f), new GradientAlphaKey(tau, 1.0f) }
         );
         
