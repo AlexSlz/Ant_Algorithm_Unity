@@ -9,17 +9,22 @@ public class PointController : MonoBehaviour, IDragHandler, IPointerDownHandler,
     public bool mouseDown;
     public Action<PointController> OnDragEvent;
     [SerializeField] public Image Timer;
+    [SerializeField] private Camera cam;
     public void OnDrag(PointerEventData eventData)
     {
         mouseDown = false;
         this.transform.position = Main.GetMousePos();
     }
 
+    void Start()
+    {
+        cam = Camera.main;
+    }
+
     void LateUpdate()
     {
-        if(this.transform.position.y >= Screen.height / 100 || this.transform.position.y <= -(Screen.height / 125))
-            this.transform.position = Vector3.zero;
-        else if(this.transform.position.x >= Screen.width / 101 || this.transform.position.x <= -(Screen.width / 101))
+        Vector3 point = cam.WorldToViewportPoint(transform.position);
+        if (point.y < 0.15f || point.y > 1f || point.x > 1f || point.x < 0f)
             this.transform.position = Vector3.zero;
         if (Timer.fillAmount <= 1)
         {
