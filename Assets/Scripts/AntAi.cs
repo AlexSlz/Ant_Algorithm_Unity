@@ -92,7 +92,7 @@ public class AntAi : MonoBehaviour
             Algorithm.UpdatePheromones(ants, wayd, numCities);
             for (int i = 0; i < wayd.Count / 2; i++)
             {
-                wayd[i].lineC.SetColor((float)wayd[i].tau, true);
+                wayd[i].lineC.SetColor((float)wayd[i].tau * (p.Count / 2), true);
                 Debug.Log(wayd[i].first + " -> " + wayd[i].second + " | "+ wayd[i].tau);
             }
             currBestTrail = Algorithm.BestTrail(ants, wayd);
