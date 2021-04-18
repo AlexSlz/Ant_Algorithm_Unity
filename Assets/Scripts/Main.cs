@@ -45,6 +45,8 @@ public class Main : MonoBehaviour
         }
         if(antSpeed == antMaxSpeed)
             SpeedText.text = "MaxSpeed";
+        else if(antSpeed == 0)
+            SpeedText.text = "Stop";
         else
         SpeedText.text = antSpeed + "";
     }
@@ -148,7 +150,7 @@ public class Main : MonoBehaviour
             }
         }
         if(q)
-            alert.SetAlert("Растояние некоторых точек автоматически заполнились.");
+            alert.SetAlert("Відстань деяких точок автоматично заповнилися.");
     }
 
     private void CreateWay()

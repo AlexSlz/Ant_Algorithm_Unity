@@ -102,14 +102,14 @@ public class AntAi : MonoBehaviour
                 bestLength = currBestLength;
                 bestTail = currBestTrail;
             }
-            BestText.text = "Текущий путь: \n" + Algorithm.DisplayTail(currBestTrail) + " | " + Algorithm.Length(currBestTrail, wayd);
+            BestText.text = "Шлях на даний момент: \n" + Algorithm.DisplayTail(currBestTrail) + " | " + Algorithm.Length(currBestTrail, wayd);
             Debug.Log("Best Way: \n" + Algorithm.DisplayTail(currBestTrail) + " | " + Algorithm.Length(currBestTrail, wayd));
             time--;
         }
         else
         {
             currBestTrail = bestTail;
-            BestText.text = "Лучший путь: \n" + Algorithm.DisplayTail(bestTail) + " | " + Algorithm.Length(bestTail, wayd);
+            BestText.text = "Кращий шлях: \n" + Algorithm.DisplayTail(bestTail) + " | " + Algorithm.Length(bestTail, wayd);
             List<int> knowWay = new List<int>();
 
             for (int i = 0; i < bestTail.Length - 1; i++)

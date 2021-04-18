@@ -43,7 +43,7 @@ public class SettingsSet : MonoBehaviour
         }
         else
         {
-            _alert.SetAlert("Нужно добавить больше 2 точек.");
+            _alert.SetAlert("Потрібно додати більше 2 точок.");
         }
     }
 
