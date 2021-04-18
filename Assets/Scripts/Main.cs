@@ -111,6 +111,8 @@ public class Main : MonoBehaviour
     {
         if (p.Count >= 2)
         {
+
+
             GetInputData();
             CreateWay();
 

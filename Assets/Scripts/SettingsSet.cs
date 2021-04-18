@@ -20,7 +20,10 @@ public class SettingsSet : MonoBehaviour
     [SerializeField] private TMP_InputField _Beta;
     [SerializeField] private TMP_InputField _Q;
     [SerializeField] private TMP_InputField _RHO;
-    [SerializeField] public Toggle Toggle_Del;
+    public Toggle Toggle_Del;
+    [SerializeField] private GridLayoutGroup controlCell;
+
+
 
     int o_old;
 
@@ -71,6 +74,22 @@ public class SettingsSet : MonoBehaviour
             o_old = PointCount;
         }
     }
+    void SettCell()
+    {
+        double temp = 1500 / PointCount;
+        if (temp % 2 != 0)
+            temp -= 1;
+        if (PointCount == 7 || PointCount == 5)
+            temp += 50;
+        if (PointCount == 9)
+            temp = 190;
+        if (PointCount <= 4)
+            temp = 500;
+        if (temp <= 150)
+            temp = 150;
+        Vector2 vector2 = new Vector2(Convert.ToSingle(temp), 70);
+        controlCell.cellSize = vector2;
+    }
     void AddInput()
     {
         for (int i = 0; i < PointCount - 1; i++)
@@ -81,6 +100,7 @@ public class SettingsSet : MonoBehaviour
                 Inputs.Add(Instantiate(Prefab, Vector3.zero, Quaternion.identity, AddZone.transform));
             }
         }
+        SettCell();
     }
 
     void SetSettings()
