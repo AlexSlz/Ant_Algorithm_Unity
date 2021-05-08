@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class Main : MonoBehaviour
 {
-
     public static int startPoint = 1;
     public int antCount = 1;
     private int antSpeed = 0;

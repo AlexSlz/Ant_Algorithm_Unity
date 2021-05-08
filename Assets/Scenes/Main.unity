@@ -1564,7 +1564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca358e76289db145baa14b45e035b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  antCount: 3
+  antCount: 1
   SpeedText: {fileID: 1708699171}
   BestText: {fileID: 1445818445}
   _ClickZone: {fileID: 565137617}

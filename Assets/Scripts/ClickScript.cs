@@ -9,9 +9,10 @@ public class ClickScript : MonoBehaviour, IPointerClickHandler
     public Action OnClickEvent;
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(eventData.pointerId == -2)
+        if(eventData.pointerId == -1 && eventData.pointerPress == this.gameObject)
         {
             OnClickEvent?.Invoke();
+            
         }
         else if(eventData.pointerId == -1)
         {

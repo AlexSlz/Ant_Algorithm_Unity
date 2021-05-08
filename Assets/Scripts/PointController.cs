@@ -34,6 +34,7 @@ public class PointController : MonoBehaviour, IDragHandler, IPointerDownHandler,
     public void OnPointerDown(PointerEventData eventData)
     {
         Main.SelectedPoint = this;
+        
         mouseDown = true;
     }
 
