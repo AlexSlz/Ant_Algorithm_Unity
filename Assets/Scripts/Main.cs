@@ -55,7 +55,14 @@ public class Main : MonoBehaviour
         {
             if (SelectedPoint.mouseDown)
             {
-                Main.SelectedPoint.Timer.fillAmount += (float)0.09;
+                if (Debug.isDebugBuild)
+                {
+                    Main.SelectedPoint.Timer.fillAmount += (float)0.009;
+                }
+                else
+                {
+                    Main.SelectedPoint.Timer.fillAmount += (float)0.09;
+                }
             }
             foreach (var item in p)
             {
@@ -68,6 +75,16 @@ public class Main : MonoBehaviour
                     break;
                 }
             }
+        }
+    }
+    public void AddPointWithBtn()
+    {
+        Vector3 pos = new Vector3(0,0);
+        if (p.Count <= 20)
+        {
+            p.Add(Instantiate(PointPref, pos, Quaternion.identity, _ClickZone.transform).GetComponent<PointController>());
+            p[p.Count - 1].GetComponentInChildren<TextMeshProUGUI>().text = p.Count + "";
+            SettingsSet.PointCount = p.Count;
         }
     }
     private void AddPoint()
@@ -124,7 +141,7 @@ public class Main : MonoBehaviour
             }
             bestTail = Algorithm.BestTrail(ants, wayd);
 
-            Debug.Log(Algorithm.DisplayTail(bestTail));
+            //Debug.Log(Algorithm.DisplayTail(bestTail));
 
             Instantiate(AntPref, p[startPoint - 1].transform.position, Quaternion.identity, _SpawnAnt.transform).GetComponent<AntAi>().AddAnt(ants, wayd, p, numCities, bestTail, BestText,Settings);
             
@@ -178,6 +195,8 @@ public class Main : MonoBehaviour
     {
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         worldPos.z = 0;
+
+ 
         return worldPos;
     }
 

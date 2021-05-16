@@ -30,10 +30,23 @@ public class SettingsSet : MonoBehaviour
     //TMP_InputField
     [SerializeField] private List<GameObject> Inputs;
 
+    void SettAutoSett()
+    {
+        if(_Alpha.text == "")
+            _Alpha.text = Algorithm.alpha + "";
+        if(_Beta.text == "")
+            _Beta.text = Algorithm.beta + "";
+        if (_Q.text == "")
+            _Q.text = Algorithm.Q + "";
+        if (_RHO.text == "")
+            _RHO.text = Algorithm.rho + "";
+    }
+
     public void ShowSettings()
     {
         if (PointCount >= 2)
         {
+            //SettAutoSett();
             if (Inputs.Count != 0)
                 RecReatea();
             else
@@ -107,17 +120,17 @@ public class SettingsSet : MonoBehaviour
     {
         if (_Alpha.text == "" || _Alpha.text == "0")
             _Alpha.text = Algorithm.alpha + "";
-        Algorithm.alpha = Convert.ToSingle(_Alpha.text);
+        //Algorithm.alpha = Convert.ToSingle(_Alpha.text);
 
         if (_Beta.text == "" || _Beta.text == "0")
             _Beta.text = Algorithm.beta + "";
-        Algorithm.beta = Convert.ToSingle(_Beta.text);
+        //Algorithm.beta = Convert.ToSingle(_Beta.text);
         if (_Q.text == "" || _Q.text == "0")
             _Q.text = Algorithm.Q + "";
-        Algorithm.Q = Convert.ToSingle(_Q.text);
+        //Algorithm.Q = Convert.ToSingle(_Q.text);
         if (_RHO.text == "" || _RHO.text == "0")
             _RHO.text = Algorithm.rho + "";
-        Algorithm.rho = Convert.ToSingle(_RHO.text);
+        //Algorithm.rho = Convert.ToSingle(_RHO.text);
     }
 
 }

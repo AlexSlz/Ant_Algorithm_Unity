@@ -28,7 +28,14 @@ public class PointController : MonoBehaviour, IDragHandler, IPointerDownHandler,
             this.transform.position = Vector3.zero;
         if (Timer.fillAmount <= 1)
         {
-            Timer.fillAmount -= (float)0.07;
+            if (Debug.isDebugBuild)
+            {
+                Timer.fillAmount -= (float)0.007;
+            }
+            else
+            {
+                Timer.fillAmount -= (float)0.07;
+            }
         }
     }
     public void OnPointerDown(PointerEventData eventData)

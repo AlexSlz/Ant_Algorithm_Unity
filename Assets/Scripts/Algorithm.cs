@@ -7,25 +7,18 @@ public class Algorithm
 
     static System.Random random = new System.Random();
 
-    public static float alpha = 1;
-    public static float beta = 1;
+    public static int alpha = 1;
+    public static int beta = 1;
 
-    public static float rho = 0.01f;
-    public static float Q = 0.2f;
+    public static double rho = 0.01;
+    public static double Q = 0.2;
 
     public static void UpdatePheromones(List<Ant> ants, List<WayData> wayd, int numCities)
     {
-
-        //alpha = 1;//numCities;
-        //beta = 1;//(numCities / 2);
-        //Q = (float)numCities / 10;
-        //rho = (float)numCities / 100;
-        //Debug.Log("a " + alpha + " | b " + beta + " | Q " + Q + " | r " + rho);
-
         foreach (var item in wayd)
         {
             bool flag = false;
-            for (int i = 0; i < ants.Count / 2; i++)
+            for (int i = 0; i < ants.Count; i++)
             {
                 for (int j = 0; j < ants[i].tail.Length - 1; j++)
                 {
@@ -102,10 +95,6 @@ public class Algorithm
             if (flag == true)
             {
                 taueta[i] = Math.Pow(wayd[i].tau, alpha) * Math.Pow((1.0 / wayd[i].length), beta);
-                if (taueta[i] < 0.0001)
-                    taueta[i] = 0.0001;
-                else if (taueta[i] > (double.MaxValue / (numCities * 100)))
-                    taueta[i] = double.MaxValue / (numCities * 100);
             }
             sum += taueta[i];
         }

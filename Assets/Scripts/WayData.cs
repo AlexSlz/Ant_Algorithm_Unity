@@ -15,6 +15,6 @@ public class WayData
         second = _second;
         length = _length;
         lineC = ln;
-        tau = 0.01;
+        tau = Algorithm.rho;
     }
 }

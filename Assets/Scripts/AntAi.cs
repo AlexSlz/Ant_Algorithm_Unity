@@ -8,6 +8,7 @@ public class AntAi : MonoBehaviour
 {
 
     int time;
+    int maxTime = 0;
 
     private int curr = 0;
     private bool back = false;
@@ -40,6 +41,7 @@ public class AntAi : MonoBehaviour
     public void AddAnt(List<Ant> _ants, List<WayData> _wayd, List<PointController> _p, int num, int[] b, TextMeshProUGUI _BestText, SettingsSet set)
     {
         time = _p.Count * 100;
+        maxTime = time;
         ants = _ants;
         wayd = _wayd;
         p = _p;
@@ -92,7 +94,7 @@ public class AntAi : MonoBehaviour
             Algorithm.UpdatePheromones(ants, wayd, numCities);
             for (int i = 0; i < wayd.Count / 2; i++)
             {
-                wayd[i].lineC.SetColor((float)wayd[i].tau * (p.Count / 2), true);
+                wayd[i].lineC.SetColor((float)wayd[i].tau, true);
                 Debug.Log(wayd[i].first + " -> " + wayd[i].second + " | "+ wayd[i].tau);
             }
             currBestTrail = Algorithm.BestTrail(ants, wayd);
@@ -102,7 +104,7 @@ public class AntAi : MonoBehaviour
                 bestLength = currBestLength;
                 bestTail = currBestTrail;
             }
-            BestText.text = "Шлях на даний момент: \n" + Algorithm.DisplayTail(currBestTrail) + " | " + Algorithm.Length(currBestTrail, wayd);
+            BestText.text = "Шлях (" + time + "/" + maxTime + ") на даний момент: \n" + Algorithm.DisplayTail(currBestTrail) + " | " + Algorithm.Length(currBestTrail, wayd);
             Debug.Log("Best Way: \n" + Algorithm.DisplayTail(currBestTrail) + " | " + Algorithm.Length(currBestTrail, wayd));
             time--;
         }
