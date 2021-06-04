@@ -159,12 +159,19 @@ public class Main : MonoBehaviour
         List<GameObject> temp = Settings.GetInput();
         for (int i = 0; i < temp.Count; i++)
         {
-            if (temp[i].GetComponentInChildren<TMP_InputField>().text != "")
-                InputData.Add(Convert.ToDouble(temp[i].GetComponentInChildren<TMP_InputField>().text));
-            else
+            if (temp[i].GetComponentInChildren<TMP_InputField>().text == "")
             {
                 InputData.Add(UnityEngine.Random.Range(i + 1, (i + 1) * 10));
                 q = true;
+            }
+            else if (temp[i].GetComponentInChildren<TMP_InputField>().text == "0")
+            {
+                InputData.Add(1);
+                q = true;
+            }
+            else
+            {
+                InputData.Add(Convert.ToDouble(temp[i].GetComponentInChildren<TMP_InputField>().text));
             }
         }
         if(q)
