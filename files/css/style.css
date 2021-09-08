@@ -1,0 +1,48 @@
+body { 
+  text-align: center;
+  font-family: "font";
+  color: white;
+  font-size: 15px;
+  background: #3D3D3D;
+  user-select: none; 
+}
+h1{
+  color: #FFB8B8;
+}
+
+.btn {
+  text-decoration: none;
+  text-align: center;
+  font-family: "font";
+  color: #f4f4f4;
+  border: 2px solid #4B4B4B;
+  padding: 0.8rem;
+  font-size: 1.5rem;
+  transition: 0.5s;
+}
+.btn:hover {
+  background-color: #4B4B4B;
+  border-color: none;
+  color: #FFB8B8;
+  transition: 0.5s;
+}
+
+
+@font-face {
+  font-family: font;
+  src: url('../Fonts/font.otf');
+}
+::-webkit-scrollbar {
+    width: 7px;
+    margin-right: 3px;
+	background-color: #4B4B4B;
+}
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #FFB8B8;
+    margin-right: 3;
+    cursor: pointer;
+    margin-left: 3
+}
